@@ -1,0 +1,449 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SHUTOFF DATE — SANZ</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Inter:wght@400;600;800&display=swap');
+
+:root {
+    --bg: #08090d;
+    --panel: #101219;
+    --red: #e04444;
+    --text: #d6d8df;
+    --muted: #777d8b;
+    --border: #292d38;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Share Tech Mono', monospace;
+    min-height: 100vh;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    opacity: .12;
+    background: repeating-linear-gradient(
+        transparent 0px,
+        transparent 3px,
+        #ffffff 4px
+    );
+    z-index: 10;
+}
+
+header {
+    border-bottom: 1px solid var(--border);
+    padding: 22px 7%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 23px;
+    font-weight: bold;
+    letter-spacing: 5px;
+    color: white;
+}
+
+.status {
+    color: var(--red);
+    font-size: 12px;
+}
+
+nav {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    padding: 20px;
+    flex-wrap: wrap;
+    border-bottom: 1px solid var(--border);
+}
+
+nav button {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 10px 17px;
+    font-family: inherit;
+    cursor: pointer;
+    transition: .2s;
+}
+
+nav button:hover,
+nav button.active {
+    color: white;
+    border-color: var(--red);
+    background: #e0444412;
+}
+
+main {
+    width: min(850px, 90%);
+    margin: 70px auto;
+    min-height: 480px;
+}
+
+.page {
+    display: none;
+    animation: appear .4s ease;
+}
+
+.page.active {
+    display: block;
+}
+
+@keyframes appear {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.eyebrow {
+    color: var(--red);
+    font-size: 12px;
+    letter-spacing: 3px;
+}
+
+h1 {
+    font-family: Inter, sans-serif;
+    font-size: clamp(40px, 9vw, 76px);
+    margin: 12px 0;
+    color: white;
+    letter-spacing: -3px;
+}
+
+h2 {
+    font-family: Inter, sans-serif;
+    color: white;
+    font-size: 25px;
+}
+
+.description {
+    color: var(--muted);
+    line-height: 1.8;
+}
+
+.panel {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    padding: 25px;
+    margin-top: 25px;
+}
+
+.countdown {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-top: 25px;
+}
+
+.time-box {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    padding: 20px 5px;
+    text-align: center;
+}
+
+.time-box strong {
+    display: block;
+    color: white;
+    font-size: clamp(25px, 5vw, 42px);
+}
+
+.time-box span {
+    color: var(--muted);
+    font-size: 10px;
+    letter-spacing: 2px;
+}
+
+.warning {
+    color: var(--red);
+}
+
+.entry {
+    border-left: 2px solid var(--red);
+    padding: 5px 20px;
+    margin: 25px 0;
+}
+
+.entry small {
+    color: var(--red);
+}
+
+.entry p {
+    color: var(--muted);
+    line-height: 1.7;
+}
+
+.redacted {
+    background: #d6d8df;
+    color: #d6d8df;
+    user-select: none;
+}
+
+footer {
+    text-align: center;
+    border-top: 1px solid var(--border);
+    padding: 30px;
+    color: var(--muted);
+    font-size: 11px;
+    letter-spacing: 2px;
+}
+
+.unknown {
+    text-align: center;
+    padding: 100px 0;
+}
+
+#shutdown {
+    display: none;
+    text-align: center;
+    padding: 65px 10px;
+}
+
+@media(max-width: 500px) {
+    header { padding: 18px 5%; }
+    .countdown { gap: 5px; }
+    .time-box { padding: 15px 2px; }
+    main { margin: 45px auto; }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">SANZ</div>
+    <div class="status">● SYSTEM ACTIVE</div>
+</header>
+
+<nav>
+    <button class="active" onclick="showPage('home', this)">HOME</button>
+    <button onclick="showPage('about', this)">ABOUT</button>
+    <button onclick="showPage('logs', this)">ACTIVITY LOG</button>
+    <button onclick="showPage('system', this)">SYSTEM STATUS</button>
+    <button onclick="showPage('unknown', this)">UNKNOWN</button>
+</nav>
+
+<main>
+
+<!-- HOME -->
+<section id="home" class="page active">
+
+    <div class="eyebrow">SYSTEM NOTICE // 001</div>
+
+    <div id="normal">
+        <h1>SHUTOFF<br>DATE.</h1>
+
+        <p class="description">
+            A scheduled termination has been registered.
+            The following system is currently operational.
+            Its continued operation is not guaranteed.
+        </p>
+
+        <div class="panel">
+            <div class="eyebrow">TERMINATION SCHEDULE</div>
+            <h2>12 / 11 / 2026</h2>
+            <p class="description">TIME REMAINING:</p>
+
+            <div class="countdown">
+                <div class="time-box">
+                    <strong id="days">--</strong>
+                    <span>DAYS</span>
+                </div>
+                <div class="time-box">
+                    <strong id="hours">--</strong>
+                    <span>HOURS</span>
+                </div>
+                <div class="time-box">
+                    <strong id="minutes">--</strong>
+                    <span>MINUTES</span>
+                </div>
+                <div class="time-box">
+                    <strong id="seconds">--</strong>
+                    <span>SECONDS</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="shutdown">
+        <div class="eyebrow">SYSTEM NOTICE // 002</div>
+        <h1>SHUTOFF<br>COMPLETE.</h1>
+        <p class="description">
+            The scheduled date has passed.<br>
+            The system is no longer operating as expected.
+        </p>
+        <div class="panel">
+            <h2 class="warning">SANZ: OFFLINE</h2>
+            <p class="description">No further information is available.</p>
+            <p>LAST KNOWN STATUS: <span class="redacted">UNKNOWN</span></p>
+        </div>
+    </div>
+
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="page">
+    <div class="eyebrow">DATABASE // PROFILE 001</div>
+    <h1>ABOUT SANZ.</h1>
+
+    <div class="panel">
+        <p>DESIGNATION: SANZ</p>
+        <p>KNOWN ALIAS: chairdoomzsanz</p>
+        <p>OCCUPATION: CONTENT CREATOR</p>
+        <p>ARTIST NAME: xp10rer</p>
+        <p>STATUS: <span class="warning">ACTIVE</span></p>
+        <p>CLASSIFICATION: <span class="redacted">████████</span></p>
+    </div>
+
+    <h2>GENERAL INFORMATION</h2>
+    <p class="description">
+        Sanz is an online creator with a history of producing
+        videos, music and other digital projects.
+
+        Further information regarding the individual's
+        activities is available in the archived records.
+    </p>
+
+    <p class="description">
+        Some information has been withheld.
+        The reason for this is currently unknown.
+    </p>
+</section>
+
+<!-- LOGS -->
+<section id="logs" class="page">
+    <div class="eyebrow">ARCHIVE // RECORDS</div>
+    <h1>ACTIVITY LOG.</h1>
+
+    <div class="entry">
+        <small>LOG 001 // ████████</small>
+        <h2>INITIAL RECORD</h2>
+        <p>
+            The earliest available record of Sanz.
+            Additional information has been withheld.
+        </p>
+    </div>
+
+    <div class="entry">
+        <small>LOG 002 // ████████</small>
+        <h2>CREATION HISTORY</h2>
+        <p>
+            Records indicate the production of multiple
+            digital projects. Several records are missing.
+        </p>
+    </div>
+
+    <div class="entry">
+        <small>LOG 003 // 12/11/2026</small>
+        <h2>SHUTOFF DATE</h2>
+        <p>
+            This entry has been scheduled for release
+            on the termination date.
+        </p>
+    </div>
+
+    <p class="warning">3 RECORDS FOUND. MORE MAY EXIST.</p>
+</section>
+
+<!-- SYSTEM STATUS -->
+<section id="system" class="page">
+    <div class="eyebrow">DIAGNOSTICS // LIVE</div>
+    <h1>SYSTEM STATUS.</h1>
+
+    <div class="panel">
+        <p>MAIN SYSTEM: <span class="warning">OPERATIONAL</span></p>
+        <p>IDENTITY DATABASE: AVAILABLE</p>
+        <p>ARCHIVE ACCESS: RESTRICTED</p>
+        <p>SHUTOFF PROTOCOL: <span class="warning">ARMED</span></p>
+        <p>RECOVERY OPTION: <span class="redacted">████████</span></p>
+        <p>EXTERNAL CONNECTIONS: UNKNOWN</p>
+    </div>
+
+    <p class="description">
+        The system is operating within expected parameters.
+        No further diagnostics are available.
+    </p>
+</section>
+
+<!-- UNKNOWN -->
+<section id="unknown" class="page">
+    <div class="unknown">
+        <div class="eyebrow">UNREGISTERED LOCATION</div>
+        <h1>404.</h1>
+        <p class="description">
+            This page was not supposed to be accessible.
+        </p>
+        <p class="warning">ACCESS DENIED.</p>
+        <br>
+        <p>YOU ARE NOT SUPPOSED TO BE HERE.</p>
+        <p class="redacted">THE DATE IS NOT THE END.</p>
+    </div>
+</section>
+
+</main>
+
+<footer>
+    SANZ ARCHIVE SYSTEM // VERSION 1.0<br><br>
+    ALL RIGHTS RESERVED // █████████
+</footer>
+
+<script>
+function showPage(page, button) {
+    document.querySelectorAll('.page').forEach(p => {
+        p.classList.remove('active');
+    });
+
+    document.querySelectorAll('nav button').forEach(b => {
+        b.classList.remove('active');
+    });
+
+    document.getElementById(page).classList.add('active');
+    button.classList.add('active');
+}
+
+// November 12, 2026 at midnight UK time.
+// The UK is on GMT (UTC+0) on this date.
+const shutoffDate = new Date("2026-11-12T00:00:00+00:00").getTime();
+
+function updateCountdown() {
+    const now = Date.now();
+    const difference = shutoffDate - now;
+
+    if (difference <= 0) {
+        document.getElementById("normal").style.display = "none";
+        document.getElementById("shutdown").style.display = "block";
+        document.querySelector(".status").textContent = "● SYSTEM OFFLINE";
+        return;
+    }
+
+    const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((difference / (1000 * 60 * 60)) % 24);
+    const minutes = Math.floor((difference / (1000 * 60)) % 60);
+    const seconds = Math.floor((difference / 1000) % 60);
+
+    document.getElementById("days").textContent = days;
+    document.getElementById("hours").textContent = String(hours).padStart(2, "0");
+    document.getElementById("minutes").textContent = String(minutes).padStart(2, "0");
+    document.getElementById("seconds").textContent = String(seconds).padStart(2, "0");
+}
+
+updateCountdown();
+setInterval(updateCountdown, 1000);
+</script>
+
+</body>
+</html>

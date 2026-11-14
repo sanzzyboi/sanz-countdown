@@ -1,560 +1,160 @@
-
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>SHUTOFF DATE — SANZ</title>
-<link id="favicon" rel="icon" type="image/png" href="sanz-icon.png">
-
-<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
-
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#080808">
+<title>SHUTOFF DATE</title>
+<link rel="icon" type="image/png" href="sanz-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
-:root {
-    --bg: #080808;
-    --panel: #101010;
-    --red: #ff3030;
-    --dim: #777;
-    --text: #dedede;
-    --border: #292929;
-}
-
-* {
-    box-sizing: border-box;
-}
-
-body {
-    margin: 0;
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Share Tech Mono', monospace;
-    min-height: 100vh;
-    overflow-x: hidden;
-}
-
-body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 10;
-    background: repeating-linear-gradient(
-        transparent 0px,
-        rgba(255,255,255,0.015) 1px,
-        transparent 2px,
-        transparent 4px
-    );
-}
-
-header {
-    padding: 22px 7%;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.logo {
-    font-size: 25px;
-    letter-spacing: 5px;
-    color: white;
-    font-weight: bold;
-}
-
-.system-label {
-    color: var(--red);
-    font-size: 12px;
-}
-
-nav {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 8px;
-    padding: 18px;
-    border-bottom: 1px solid var(--border);
-}
-
-nav button {
-    background: transparent;
-    color: var(--dim);
-    border: 1px solid var(--border);
-    padding: 10px 17px;
-    font-family: inherit;
-    cursor: pointer;
-    transition: 0.2s;
-}
-
-nav button:hover,
-nav button.active {
-    color: var(--red);
-    border-color: var(--red);
-}
-
-main {
-    width: 86%;
-    max-width: 1000px;
-    margin: 65px auto;
-    min-height: 430px;
-}
-
-.page {
-    display: none;
-    animation: fadeIn 0.35s ease;
-}
-
-.page.active {
-    display: block;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(8px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-h1 {
-    font-family: Inter, sans-serif;
-    font-size: clamp(35px, 7vw, 65px);
-    letter-spacing: -3px;
-    margin: 10px 0;
-    color: white;
-}
-
-h2 {
-    color: var(--red);
-    font-size: 19px;
-    margin-top: 35px;
-}
-
-p {
-    line-height: 1.8;
-    color: #aaa;
-}
-
-.red {
-    color: var(--red);
-}
-
-.muted {
-    color: var(--dim);
-}
-
-.divider {
-    height: 1px;
-    background: var(--border);
-    margin: 30px 0;
-}
-
-.eyebrow {
-    color: var(--red);
-    font-size: 13px;
-    letter-spacing: 3px;
-}
-
-.countdown {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 18px;
-    margin: 40px 0;
-}
-
-.time-box {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    padding: 22px;
-    min-width: 105px;
-    text-align: center;
-}
-
-.time-number {
-    font-family: Inter, sans-serif;
-    font-size: 36px;
-    font-weight: 900;
-    color: white;
-}
-
-.time-label {
-    color: var(--dim);
-    font-size: 11px;
-    margin-top: 8px;
-}
-
-.warning {
-    border-left: 3px solid var(--red);
-    padding: 12px 18px;
-    background: #130b0b;
-    color: #aaa;
-    margin-top: 30px;
-}
-
-.panel {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    padding: 22px;
-    margin: 15px 0;
-}
-
-.panel h3 {
-    color: white;
-    margin-top: 0;
-}
-
-.log-entry {
-    border-left: 2px solid var(--red);
-    padding: 12px 20px;
-    margin: 25px 0;
-    background: var(--panel);
-}
-
-.log-entry h3 {
-    color: white;
-    margin-top: 0;
-}
-
-.redacted {
-    background: #dedede;
-    color: #dedede;
-    user-select: none;
-}
-
-footer {
-    border-top: 1px solid var(--border);
-    text-align: center;
-    padding: 30px;
-    color: #555;
-    font-size: 11px;
-    letter-spacing: 2px;
-}
-
-#shutdown-screen {
-    display: none;
-    min-height: 75vh;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 30px;
-}
-
-.shutdown-content h1 {
-    color: var(--red);
-    font-size: clamp(40px, 9vw, 85px);
-    letter-spacing: 2px;
-}
-
-.shutdown-content p {
-    color: #777;
-}
-
-.shutdown-status {
-    color: var(--red);
-    letter-spacing: 4px;
-    margin-top: 35px;
-}
-
-@media (max-width: 600px) {
-    header {
-        padding: 18px 5%;
-    }
-
-    main {
-        width: 90%;
-        margin: 40px auto;
-    }
-
-    .time-box {
-        min-width: 75px;
-        flex: 1;
-        padding: 15px 8px;
-    }
-
-    .time-number {
-        font-size: 27px;
-    }
-}
+:root{--bg:#080808;--panel:#101010;--red:#e02b35;--dim:#8f1820;--text:#d7d7d7;--muted:#777;--line:#292929}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:"Share Tech Mono","Courier New",monospace;letter-spacing:.025em}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:10;opacity:.16;background:repeating-linear-gradient(to bottom,transparent 0,transparent 2px,#000 3px,#000 4px)}
+body:after{content:"";position:fixed;inset:0;pointer-events:none;z-index:9;background:radial-gradient(ellipse at center,transparent 45%,rgba(0,0,0,.58))}
+button{font:inherit}.wrap{width:min(940px,calc(100% - 32px));margin:auto;padding:34px 0 60px;position:relative;z-index:1}
+header{border:1px solid var(--line);background:#0b0b0b;padding:22px 24px 18px}
+.topline{display:flex;justify-content:space-between;gap:12px;color:var(--muted);font-size:12px;text-transform:uppercase}
+.status-dot,.red{color:var(--red)}h1{color:var(--red);font-family:"Space Mono",monospace;font-size:clamp(27px,6vw,48px);line-height:1.1;letter-spacing:.12em;margin:25px 0 8px;text-shadow:0 0 16px #e02b3538}
+.subtitle{color:#aaa;font-size:13px;letter-spacing:.16em}.header-rule{height:1px;background:linear-gradient(90deg,var(--dim),transparent);margin-top:22px}
+nav{display:flex;flex-wrap:wrap;border:1px solid var(--line);border-top:0;background:#0c0c0c}
+nav button{flex:1 1 130px;padding:14px 10px;color:#888;background:transparent;border:0;border-right:1px solid var(--line);cursor:pointer;font-size:12px;letter-spacing:.1em}
+nav button:last-child{border-right:0}nav button:hover,nav button.active{color:var(--red);background:#151010}nav button.active{box-shadow:inset 0 -2px var(--red)}
+main{border:1px solid var(--line);border-top:0;background:#0c0cf7; background:rgba(12,12,12,.96);min-height:440px;padding:clamp(20px,4vw,34px)}
+.page{display:none;animation:appear .22s ease-out}.page.active{display:block}
+@keyframes appear{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+.eyebrow{color:var(--red);font-size:12px;letter-spacing:.15em;margin-bottom:12px}
+h2{font-family:"Space Mono",monospace;font-size:20px;font-weight:400;color:#eee;margin:0 0 20px}
+p{line-height:1.75;color:#aaa;font-size:14px}
+.count-panel{margin:28px 0 22px;padding:25px 18px;border:1px solid #4a171b;background:linear-gradient(135deg,#160b0c,#0c0c0c 70%);text-align:center}
+.count-label{color:#a56a6d;font-size:12px;letter-spacing:.2em}
+#countdown{color:var(--red);font-family:"Space Mono",monospace;font-size:clamp(34px,8vw,64px);margin:12px 0 8px;letter-spacing:.06em;text-shadow:0 0 18px #e02b3538}
+.deadline{color:#777;font-size:12px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:20px}
+.data-box{border:1px solid var(--line);padding:15px;background:#0c0c0c;min-width:0}
+.data-label{color:#777;font-size:11px;letter-spacing:.12em;margin-bottom:8px}
+.data-value{color:#ccc;font-size:14px;overflow-wrap:anywhere}
+.log-list{list-style:none;padding:0;margin:20px 0 0}.log-list li{border-left:1px solid var(--dim);padding:0 0 22px 17px;position:relative;color:#aaa;font-size:13px;line-height:1.7}
+.log-list li:before{content:"";position:absolute;left:-4px;top:5px;width:7px;height:7px;background:var(--red)}
+.log-id{color:var(--red);display:block;font-size:11px;margin-bottom:4px}
+.redacted{color:#444;background:#444;user-select:none}
+.unknown{text-align:center;padding:65px 10px}.unknown .code{font-size:clamp(48px,12vw,82px);color:var(--red);font-family:"Space Mono",monospace}
+.unknown .warning{color:#ddd;letter-spacing:.12em;margin-top:20px}
+footer{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;color:#555;font-size:11px;padding:14px 2px}
+#shutdown-screen{display:none;min-height:100vh;background:#050505;color:var(--text);align-items:center;justify-content:center;text-align:center;padding:24px;position:relative;z-index:20}
+#shutdown-screen.visible{display:flex}.shutdown-inner{width:min(700px,100%);border:1px solid #4a171b;background:#0b0809;padding:clamp(28px,6vw,60px) 22px}
+.shutdown-mark{color:var(--red);font-size:12px;letter-spacing:.22em;margin-bottom:25px}
+.shutdown-title{color:var(--red);font-family:"Space Mono",monospace;font-size:clamp(25px,6vw,44px);letter-spacing:.1em;margin:0 0 20px}
+.shutdown-copy{color:#999;line-height:1.8;font-size:14px}
+.shutdown-log{margin:28px auto 0;text-align:left;width:min(430px,100%);color:#777;font-size:12px;line-height:2;border-top:1px solid var(--line);padding-top:18px}
+.blink{animation:blink 1.2s steps(2,start) infinite}@keyframes blink{to{visibility:hidden}}
+@media(max-width:560px){.wrap{width:calc(100% - 20px);padding-top:12px}header{padding:18px 15px}.grid{grid-template-columns:1fr}nav button{flex-basis:33.33%;border-bottom:1px solid var(--line)}nav button:nth-child(3){border-right:0}}
 </style>
 </head>
-
 <body>
-
+<div id="main-content">
+<div class="wrap">
 <header>
-    <div class="logo">SANZ</div>
-    <div class="system-label" id="system-label">SYSTEM ACTIVE</div>
+<div class="topline"><span>ARCHIVE TERMINAL // 00-SANZ</span><span><span class="status-dot">●</span> SYSTEM ACTIVE</span></div>
+<h1>SHUTOFF DATE</h1>
+<div class="subtitle">A TERMINATION SEQUENCE HAS BEEN SCHEDULED</div><div class="header-rule"></div>
 </header>
-
-<nav id="navigation">
-    <button class="active" onclick="showPage('home', this)">HOME</button>
-    <button onclick="showPage('about', this)">ABOUT</button>
-    <button onclick="showPage('logs', this)">ACTIVITY LOG</button>
-    <button onclick="showPage('status', this)">SYSTEM STATUS</button>
-    <button onclick="showPage('unknown', this)">UNKNOWN</button>
+<nav aria-label="Main navigation">
+<button class="active" data-page="home">HOME</button><button data-page="about">ABOUT</button><button data-page="activity">ACTIVITY LOG</button><button data-page="status">SYSTEM STATUS</button><button data-page="unknown">UNKNOWN</button>
 </nav>
-
-<main id="main-content">
-
-    <!-- HOME -->
-    <section class="page active" id="home">
-        <div class="eyebrow">ARCHIVE ENTRY // 001</div>
-
-        <h1>SHUTOFF DATE</h1>
-
-        <p>A date has been established.</p>
-
-        <div class="divider"></div>
-
-        <div class="eyebrow">TIME REMAINING</div>
-
-        <div class="countdown">
-            <div class="time-box">
-                <div class="time-number" id="days">--</div>
-                <div class="time-label">DAYS</div>
-            </div>
-
-            <div class="time-box">
-                <div class="time-number" id="hours">--</div>
-                <div class="time-label">HOURS</div>
-            </div>
-
-            <div class="time-box">
-                <div class="time-number" id="minutes">--</div>
-                <div class="time-label">MINUTES</div>
-            </div>
-
-            <div class="time-box">
-                <div class="time-number" id="seconds">--</div>
-                <div class="time-label">SECONDS</div>
-            </div>
-        </div>
-
-        <p class="red">12 / 11 / 2026 — 20:00 GMT</p>
-
-        <div class="warning">
-            WARNING: The shutdown protocol has been scheduled.
-            Further information is unavailable.
-        </div>
-    </section>
-
-
-    <!-- ABOUT -->
-    <section class="page" id="about">
-        <div class="eyebrow">DATABASE // IDENTITY</div>
-
-        <h1>ABOUT SANZ</h1>
-
-        <div class="panel">
-            <h3>SUBJECT INFORMATION</h3>
-
-            <p>DESIGNATION: <span class="red">SANZ</span></p>
-            <p>KNOWN ALIAS: chairdoomzsanz</p>
-            <p>OCCUPATION: Content Creator</p>
-            <p>ARTIST NAME: xp10rer</p>
-            <p>STATUS: <span class="red">ACTIVE</span></p>
-            <p>CLASSIFICATION: <span class="redacted">REDACTED</span></p>
-        </div>
-
-        <h2>GENERAL INFORMATION</h2>
-
-        <p>
-            Sanz is an independent creator involved in video production,
-            music, digital projects and other creative activities.
-        </p>
-
-        <p>
-            Further information regarding this subject is currently
-            available within the archive.
-        </p>
-    </section>
-
-
-    <!-- ACTIVITY LOG -->
-    <section class="page" id="logs">
-        <div class="eyebrow">ARCHIVE // RECORDS</div>
-
-        <h1>ACTIVITY LOG</h1>
-
-        <p>Recorded events and archived information.</p>
-
-        <div class="log-entry">
-            <h3>LOG 001</h3>
-            <p>System initialized.</p>
-            <p>Subject identified.</p>
-        </div>
-
-        <div class="log-entry">
-            <h3>LOG 002</h3>
-            <p>Archive established.</p>
-            <p>Monitoring has begun.</p>
-        </div>
-
-        <div class="log-entry">
-            <h3>LOG 003</h3>
-            <p>A shutdown date has been selected.</p>
-            <p>There is no further information.</p>
-        </div>
-
-        <!-- THIS ENTRY UNLOCKS AT 8 PM -->
-        <div class="log-entry" id="shutdown-log" style="display:none;">
-            <h3>LOG 004 — 12/11/2026</h3>
-            <p>FINAL ENTRY.</p>
-            <p>The countdown has reached zero.</p>
-            <p>SANZ is no longer responding.</p>
-            <p>Do not attempt to restart the system.</p>
-            <p class="red">END OF ARCHIVE.</p>
-        </div>
-
-    </section>
-
-
-    <!-- SYSTEM STATUS -->
-    <section class="page" id="status">
-        <div class="eyebrow">SYSTEM DIAGNOSTICS</div>
-
-        <h1>SYSTEM STATUS</h1>
-
-        <div class="panel">
-            <p>MAIN SYSTEM: <span class="red">OPERATIONAL</span></p>
-            <p>IDENTITY DATABASE: AVAILABLE</p>
-            <p>ARCHIVE ACCESS: RESTRICTED</p>
-            <p>SHUTOFF PROTOCOL: <span class="red">ARMED</span></p>
-            <p>RECOVERY OPTION: <span class="redacted">REDACTED</span></p>
-            <p>EXTERNAL CONNECTIONS: UNKNOWN</p>
-        </div>
-
-        <p class="muted">
-            System diagnostics may not reflect the actual state of the subject.
-        </p>
-    </section>
-
-
-    <!-- UNKNOWN -->
-    <section class="page" id="unknown">
-        <div class="eyebrow">ERROR // 404</div>
-
-        <h1>UNKNOWN</h1>
-
-        <p>This page was not supposed to be accessible.</p>
-
-        <div class="divider"></div>
-
-        <h2>YOU ARE NOT SUPPOSED TO BE HERE.</h2>
-
-        <p>ACCESS DENIED.</p>
-
-        <p class="redacted">THE DATE IS NOT THE END.</p>
-    </section>
-
+<main>
+<section class="page active" id="home">
+<div class="eyebrow">01 // MAIN TERMINAL</div><h2>SHUTDOWN SEQUENCE</h2>
+<p>A date has been selected. The system will continue operating until the timer reaches zero. No further details are available.</p>
+<div class="count-panel"><div class="count-label">TIME REMAINING</div><div id="countdown">--:--:--</div><div class="deadline">SCHEDULED SHUTOFF: 14 NOVEMBER 2026 // 20:00 UTC</div></div>
+<div class="grid">
+<div class="data-box"><div class="data-label">DESIGNATION</div><div class="data-value">S.A.N.Z.</div></div>
+<div class="data-box"><div class="data-label">CURRENT STATUS</div><div class="data-value red" id="home-status">ACTIVE</div></div>
+<div class="data-box"><div class="data-label">ARCHIVE</div><div class="data-value">ESTABLISHED</div></div>
+<div class="data-box"><div class="data-label">RECOVERY</div><div class="data-value red">UNCONFIRMED</div></div>
+</div></section>
+<section class="page" id="about">
+<div class="eyebrow">02 // SUBJECT INFORMATION</div><h2>ABOUT THE SUBJECT</h2>
+<p>The following information has been recovered from the identity database.</p>
+<div class="grid">
+<div class="data-box"><div class="data-label">DESIGNATION</div><div class="data-value">SANZ</div></div>
+<div class="data-box"><div class="data-label">ALIAS</div><div class="data-value">chairdoomzsanz</div></div>
+<div class="data-box"><div class="data-label">OCCUPATION</div><div class="data-value">CONTENT CREATOR</div></div>
+<div class="data-box"><div class="data-label">ARTIST NAME</div><div class="data-value">xp10rer</div></div>
+<div class="data-box"><div class="data-label">CLASSIFICATION</div><div class="data-value"><span class="redacted">REDACTED</span></div></div>
+<div class="data-box"><div class="data-label">STATUS</div><div class="data-value red">PENDING SHUTOFF</div></div>
+</div></section>
+<section class="page" id="activity">
+<div class="eyebrow">03 // RECOVERED RECORDS</div><h2>ACTIVITY LOG</h2>
+<ul class="log-list">
+<li><span class="log-id">LOG 001 // SYSTEM INITIALIZED</span>System initialized. Identity record created.</li>
+<li><span class="log-id">LOG 002 // ARCHIVE ESTABLISHED</span>Archive established. Available records transferred.</li>
+<li><span class="log-id">LOG 003 // SHUTOFF DATE SELECTED</span>Shutdown date selected. Countdown sequence armed.</li>
+<li><span class="log-id">LOG 004 // FINAL ENTRY</span><span class="redacted">ENTRY LOCKED UNTIL COUNTDOWN COMPLETES</span></li>
+</ul></section>
+<section class="page" id="status">
+<div class="eyebrow">04 // DIAGNOSTICS</div><h2>SYSTEM STATUS</h2>
+<div class="grid">
+<div class="data-box"><div class="data-label">MAIN SYSTEM</div><div class="data-value">OPERATIONAL</div></div>
+<div class="data-box"><div class="data-label">IDENTITY DATABASE</div><div class="data-value">AVAILABLE</div></div>
+<div class="data-box"><div class="data-label">ARCHIVE ACCESS</div><div class="data-value">RESTRICTED</div></div>
+<div class="data-box"><div class="data-label">SHUTOFF SEQUENCE</div><div class="data-value red">ARMED</div></div>
+<div class="data-box"><div class="data-label">RECOVERY PROTOCOL</div><div class="data-value"><span class="redacted">REDACTED</span></div></div>
+<div class="data-box"><div class="data-label">EXTERNAL CONNECTIONS</div><div class="data-value">UNKNOWN</div></div>
+</div></section>
+<section class="page" id="unknown"><div class="unknown">
+<div class="code">404</div><div class="warning">YOU ARE NOT SUPPOSED TO BE HERE.</div>
+<p>THIS SECTION WAS NOT INCLUDED IN THE ORIGINAL ARCHIVE.</p><p class="red">THE DATE IS NOT THE END.</p>
+</div></section>
 </main>
-
-
-<!-- SHUTDOWN SCREEN -->
-<section id="shutdown-screen">
-    <div class="shutdown-content">
-        <div class="eyebrow">SYSTEM TERMINATED</div>
-
-        <h1>SHUTOFF COMPLETE</h1>
-
-        <div class="divider"></div>
-
-        <p>SANZ: OFFLINE</p>
-
-        <p>The scheduled shutdown has been completed.</p>
-
-        <p class="shutdown-status">NO RESPONSE DETECTED</p>
-    </div>
-</section>
-
-
-<footer>
-    SANZ ARCHIVE SYSTEM // 2026
-</footer>
-
-
+<footer><span>SHUTOFF DATE // SANZ ARCHIVE</span><span>CONNECTION STATUS: <span class="red">UNKNOWN</span></span></footer>
+</div></div>
+<div id="shutdown-screen" aria-live="polite">
+<div class="shutdown-inner">
+<div class="shutdown-mark">SANZ // SHUTOFF SEQUENCE</div>
+<h1 class="shutdown-title">TERMINATION IN PROGRESS</h1>
+<div class="shutdown-copy">The scheduled shutoff time has been reached.<br>The system is no longer operating normally.<br><span class="red">DO NOT ATTEMPT RESTART.</span></div>
+<div class="shutdown-log">
+<div>LOG 004 // FINAL ENTRY</div><div>COUNTDOWN REACHED ZERO.</div><div>SANZ IS NO LONGER RESPONDING.</div><div>ARCHIVE STATUS: SEALED.</div><div>FINAL TERMINATION: PENDING.</div><div class="blink">_</div>
+</div></div></div>
 <script>
+// 8:00 PM UK time on 14 November 2026 (GMT / UTC).
+const shutdownDate = new Date("2026-11-14T20:00:00+00:00").getTime();
+const countdown = document.getElementById("countdown");
+const mainContent = document.getElementById("main-content");
+const shutdownScreen = document.getElementById("shutdown-screen");
+const homeStatus = document.getElementById("home-status");
 
-// ========================================
-// SHUTOFF DATE
-// November 12, 2026 at 8:00 PM UK time
-// ========================================
-
-const shutdownDate = new Date(
-    "2026-11-12T20:00:00+00:00"
-).getTime();
-
-
-// ========================================
-// NAVIGATION
-// ========================================
-
-function showPage(pageId, button) {
-    document.querySelectorAll(".page").forEach(page => {
-        page.classList.remove("active");
-    });
-
-    document.getElementById(pageId).classList.add("active");
-
-    document.querySelectorAll("nav button").forEach(btn => {
-        btn.classList.remove("active");
-    });
-
+document.querySelectorAll("nav button").forEach(button => {
+  button.addEventListener("click", () => {
+    document.querySelectorAll("nav button").forEach(item => item.classList.remove("active"));
+    document.querySelectorAll(".page").forEach(page => page.classList.remove("active"));
     button.classList.add("active");
-}
-
-
-// ========================================
-// COUNTDOWN
-// ========================================
+    document.getElementById(button.dataset.page).classList.add("active");
+  });
+});
 
 function updateCountdown() {
-
-    const now = new Date().getTime();
-    const difference = shutdownDate - now;
-
-    if (difference <= 0) {
-
-        // Reveal the final activity log
-        document.getElementById("shutdown-log").style.display = "block";
-
-        // Hide the regular website
-        document.getElementById("main-content").style.display = "none";
-        document.getElementById("navigation").style.display = "none";
-
-        // Show the shutdown screen
-        document.getElementById("shutdown-screen").style.display = "flex";
-
-        // Update system status
-        document.getElementById("system-label").textContent = "SYSTEM OFFLINE";
-
-        // Update browser tab title
-        document.title = "SANZ — OFFLINE";
-
-        return;
-    }
-
-    const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-    const hours = Math.floor(
-        (difference % (1000 * 60 * 60 * 24)) /
-        (1000 * 60 * 60)
-    );
-    const minutes = Math.floor(
-        (difference % (1000 * 60 * 60)) /
-        (1000 * 60)
-    );
-    const seconds = Math.floor(
-        (difference % (1000 * 60)) / 1000
-    );
-
-    document.getElementById("days").textContent = days;
-    document.getElementById("hours").textContent = hours;
-    document.getElementById("minutes").textContent = minutes;
-    document.getElementById("seconds").textContent = seconds;
+  const distance = shutdownDate - Date.now();
+  if (distance <= 0) {
+    countdown.textContent = "00:00:00";
+    homeStatus.textContent = "TERMINATION IN PROGRESS";
+    mainContent.style.display = "none";
+    shutdownScreen.classList.add("visible");
+    document.title = "TERMINATION IN PROGRESS";
+    return;
+  }
+  const days = Math.floor(distance / 86400000);
+  const hours = Math.floor((distance % 86400000) / 3600000);
+  const minutes = Math.floor((distance % 3600000) / 60000);
+  const seconds = Math.floor((distance % 60000) / 1000);
+  countdown.textContent = days > 0
+    ? `${days}D ${String(hours).padStart(2,"0")}:${String(minutes).padStart(2,"0")}:${String(seconds).padStart(2,"0")}`
+    : `${String(hours).padStart(2,"0")}:${String(minutes).padStart(2,"0")}:${String(seconds).padStart(2,"0")}`;
 }
-
-
-// Run immediately, then update every second
 updateCountdown();
-setInterval(updateCountdown, 1000);
-
+setInterval(updateCountdown,1000);
 </script>
-
 </body>
 </html>
